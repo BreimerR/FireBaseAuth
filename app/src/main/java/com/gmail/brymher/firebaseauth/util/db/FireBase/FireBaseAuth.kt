@@ -1,6 +1,7 @@
 package com.gmail.brymher.firebaseauth.util.db.FireBase
 
 import android.os.AsyncTask
+import com.gmail.brymher.firebaseauth.util.datastructures.dO
 import com.google.firebase.auth.FirebaseAuth
 import com.gmail.brymher.movieticketing.validlogin.Validatable
 
@@ -14,15 +15,14 @@ class FireBaseAuth : FireBase() {
         FirebaseAuth.getInstance()
     }
 
-    val isSignedIn
-        get() = auth.currentUser != null
+    val isSignedIn get() = auth.currentUser != null
 
     fun create(
         email: Validatable<*>, password: Validatable<*>, onComplete: (() -> Unit)? = null,
         onSuccess: (() -> Unit)? = null,
         onCanceled: (() -> Unit)? = null
     ) {
-        if (validateInputs(email, password)) {
+        validateInputs(email, password).dO {
             Task(this, onComplete, onSuccess, onCanceled).execute(email.string, password.string)
         }
     }
